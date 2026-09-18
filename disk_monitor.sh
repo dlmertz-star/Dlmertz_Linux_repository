@@ -7,14 +7,12 @@ source "${SCRIPT_DIR}/disk_monitor.conf"
 
 DM_ALERT="${SCRIPT_DIR}/disk_alert.sh"
 
-df -h | grep -E '/dev/sd.|/dev/nvme.' | while read -r line
+df -h | grep -E '/dev/sd.|/dev/nvme.' | while read -r DM_FILESYSTEM _ _ _ DM_PERCENT _
 do
-	DM_FILESYSTEM="$(echo "${line}" | awk '{print "${1}"}')"
-	DM_PERCENT="$(echo "${line}" | awk '{print "${5}"}')"
 	DM_PERCENTNUMBER=$(echo "${DM_PERCENT}" | tr -d '%')
 	if [ "${DM_PERCENTNUMBER}" -ge "${DM_THRESHOLD}" ]
 	then
-		"${DM_ALERt}" "${DM_FILESYSTEM}" "${DM_PERCENT}"
+		"${DM_ALERT}" "${DM_FILESYSTEM}" "${DM_PERCENT}"
 	fi
 done
 
