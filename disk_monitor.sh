@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR="${cd "(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SCIPT_NAME="$(basname "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_NAME="$(basename "${BASH_SOURCE[0]}")"
 
-source "${(SCRIPT_DIR}/disk_monitor.conf"
+source "${SCRIPT_DIR}/disk_monitor.conf"
 
-DM_ALERT="${HOME}/disk_alert.sh"
+DM_ALERT="${SCRIPT_DIR}/disk_alert.sh"
 
-df -h | grep -E '/dev/sd[a-z]|/dev/nvme[0-9]' | while read line
+df -h | grep -E '/dev/sd.|/dev/nvme.' | while read -r line
 do
 	DM_FILESYSTEM="$(echo "${line}" | awk '{print "${1}"}')"
 	DM_PERCENT="$(echo "${line}" | awk '{print "${5}"}')"
