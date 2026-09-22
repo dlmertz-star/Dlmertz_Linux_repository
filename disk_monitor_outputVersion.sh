@@ -7,7 +7,7 @@ source "${SCRIPT_DIR}/disk_monitor.conf"
 
 DM_ALERT="${SCRIPT_DIR}/disk_alert.sh"
 
-df -h | grep '^/dev/' | while read -r DM_FILESYSTEM _ _ _ DM_PERCENT _
+df --output='source','pcent' | grep '^/dev/' | while read -r DM_FILESYSTEM DM_PERCENT
 do
 	DM_PERCENTNUMBER= "${DM_PERCENT%/%}"
 	if [ "${DM_PERCENTNUMBER}" -ge "${DM_THRESHOLD}" ]
